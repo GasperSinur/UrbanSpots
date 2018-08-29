@@ -1,53 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 
 namespace UrbanSpots
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity
+    [Activity(Label = "Urbane Mreže")]
+    public class MainActivity : Activity
     {
+        private Button btnAddSpot;
+        private TextView txtWelcome;
+        private Guid userGuid;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
 
-            Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
+            SetContentView(Resource.Layout.Main);
+            this.Window.SetTitle("Urbane mreže");
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            btnAddSpot = FindViewById<Button>(Resource.Id.btnAddSpot);
+            btnAddSpot.Click += BtnAddSpot_Click;
+
+            txtWelcome = FindViewById<TextView>(Resource.Id.txtWelcome);
+            txtWelcome.Text = "Pozdravljeni, " + Intent.GetStringExtra("UserName") + "!";
+            userGuid = new Guid(Intent.GetStringExtra("UserGuid"));
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+        private void BtnAddSpot_Click(object sender, EventArgs e)
         {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
+            var spotsActivity = new Intent(this, typeof(SpotsActivity));
+            spotsActivity.PutExtra("UserGuid", userGuid.ToString());
+            StartActivity(spotsActivity);
         }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-            if (id == Resource.Id.action_settings)
-            {
-                return true;
-            }
-
-            return base.OnOptionsItemSelected(item);
-        }
-
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-        }
-	}
+    }
 }
-

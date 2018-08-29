@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:weightSum="100"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <TextView
+        android:text="Nova lokacija"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_weight="8"
+        android:layout_height="0dp"
+        android:textColor="#368DEB"
+        android:id="@+id/txtNewSpot"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+    <EditText
+        android:layout_marginTop="25dp"
+        android:id="@+id/txtSpotName"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/EditTextStyle"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Ime lokacije"
+        android:paddingLeft="10dp"
+        android:textColor="#000"
+        android:cursorVisible="true"
+        android:inputType="textNoSuggestions" />
+    <EditText
+        android:id="@+id/txtSpotDescription"
+        android:layout_width="match_parent"
+        android:layout_height="70.0dp"
+        android:background="@drawable/EditTextStyle"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Opis"
+        android:paddingLeft="10dp"
+        android:textColor="#000"
+        android:cursorVisible="true"
+        android:inputType="textNoSuggestions" />
+    <Button
+        android:text="Fotografiraj"
+        android:layout_width="match_parent"
+        android:layout_weight="15"
+        android:layout_height="0dp"
+        android:id="@+id/btnTakePhoto"
+        android:textSize="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/BtnSignInStyle" />
+    <ImageView
+        android:src="@android:drawable/ic_menu_gallery"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="40"
+        android:layout_height="0dp"
+        android:id="@+id/imgView" />
+    <TextView
+        android:text="Koordinate:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textColor="#368DEB"
+        android:id="@+id/txtCoordinates"
+        android:gravity="center"
+        android:textSize="10dp"
+        android:textStyle="bold" />
+    <Button
+        android:text="Dodaj lokacijo"
+        android:layout_width="match_parent"
+        android:layout_weight="15"
+        android:layout_height="0dp"
+        android:id="@+id/btnAddLocation"
+        android:textSize="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/BtnSignInStyle" />
+    <TextView
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textColor="#368DEB"
+        android:id="@+id/txtMessage"
+        android:gravity="center"
+        android:textSize="10dp"
+        android:textStyle="bold" />
+</LinearLayout>
