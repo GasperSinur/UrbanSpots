@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrbanSpots", "UrbanSpots\UrbanSpots.csproj", "{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrbanSpotsWcfService", "..\..\..\Downloads\Android\BCKP_UrbanSpotsWcfService\BCKP_UrbanSpotsWcfService\UrbanSpotsWcfService\UrbanSpotsWcfService.csproj", "{65E41B5A-0EDE-4F23-B7D8-60C6A872C1CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{65E41B5A-0EDE-4F23-B7D8-60C6A872C1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65E41B5A-0EDE-4F23-B7D8-60C6A872C1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E41B5A-0EDE-4F23-B7D8-60C6A872C1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65E41B5A-0EDE-4F23-B7D8-60C6A872C1CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
