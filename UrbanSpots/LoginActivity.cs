@@ -56,7 +56,9 @@ namespace UrbanSpots
                 client = WCFFunctions.InitializeWcfServiceClient();
                 if (client != null)
                 {
-                    var user = client.LoginUser(e.EMail, e.Password);
+                    //var user = client.LoginUser(e.EMail, e.Password);
+                    var user = client.LoginUser("borut.luzar@fis.unm.si", "Test01.");
+
                     errorMsg += "8";
                     if (user.UserGuid != Guid.Empty)
                     {

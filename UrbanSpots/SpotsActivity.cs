@@ -16,6 +16,8 @@ using Android.Provider;
 using Android.Graphics;
 using Java.IO;
 using Java.Nio;
+using Android;
+using Android.Support.V4.Content;
 
 namespace UrbanSpots
 {
@@ -37,6 +39,7 @@ namespace UrbanSpots
 
         private Guid userGuid;
 
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -47,6 +50,12 @@ namespace UrbanSpots
             userGuid = new Guid(Intent.GetStringExtra("UserGuid"));
             txtCoordinates = FindViewById<TextView>(Resource.Id.txtCoordinates);
             txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
+
+            int MY_LOCATION_REQUEST_CODE = 100;
+            if (CheckSelfPermission(Manifest.Permission.AccessFineLocation) != Permission.Granted)
+            {
+                RequestPermissions(new String[] { Manifest.Permission.AccessFineLocation }, MY_LOCATION_REQUEST_CODE);
+            }
 
             if (IsThereAnAppToTakePictures())
             {
@@ -60,6 +69,12 @@ namespace UrbanSpots
 
                 btnAddLocation = FindViewById<Button>(Resource.Id.btnAddLocation);
                 btnAddLocation.Click += BtnAddLocation_Click;
+
+                int MY_CAMERA_REQUEST_CODE = 100;
+                if (CheckSelfPermission(Manifest.Permission.Camera) != Permission.Granted)
+                {
+                    RequestPermissions(new String[] { Manifest.Permission.Camera }, MY_CAMERA_REQUEST_CODE);
+                }
             }
         }
 
@@ -114,32 +129,67 @@ namespace UrbanSpots
 
         private void HandleLocationManager()
         {
-            Criteria locationCriteria = new Criteria();
+            Criteria locationCriteria = new Criteria
+            {
+                Accuracy = Accuracy.Fine,
+                PowerRequirement = Power.Medium
+            };
+            /*var providers = locMgr.GetProviders(false);
 
-            locationCriteria.Accuracy = Accuracy.Coarse;
-            locationCriteria.PowerRequirement = Power.Medium;
+            foreach (var provider in providers)
+                locMgr.RequestLocationUpdates(provider, 0, 0, this);*/
 
             string locationProvider = locMgr.GetBestProvider(locationCriteria, true);
             //string locationProvider = LocationManager.GpsProvider;
 
-            if (locMgr.IsProviderEnabled(locationProvider))
+            if (locationProvider != null)
             {
-                Location lastKnownLocation = locMgr.GetLastKnownLocation(locationProvider);
-
-                locMgr.RequestLocationUpdates(locationProvider, 2000, 1, this);
-
-                if (lastKnownLocation != null)
+                if (locMgr.IsProviderEnabled(locationProvider))
                 {
-                    lat = Math.Round(lastKnownLocation.Latitude, 3).ToString();
-                    lng = Math.Round(lastKnownLocation.Longitude, 3).ToString();
+                    Location lastKnownLocation = locMgr.GetLastKnownLocation(locationProvider);
 
-                    txtCoordinates.Text = "Koordinate: " + lat + "," + lng;
+                    locMgr.RequestLocationUpdates(locationProvider, 2000, 1, this);
+
+                    if (lastKnownLocation != null)
+                    {
+                        lat = Math.Round(lastKnownLocation.Latitude, 6).ToString();
+                        lng = Math.Round(lastKnownLocation.Longitude, 3).ToString();
+
+                        txtCoordinates.Text = "Koordinate: " + lat + "," + lng;
+                    }
+                }
+                else
+                {
+                    Log.Info("Urbane mreže", locationProvider + " ni na voljo. Ali ima naprava omogočene storitve določanja lokacije?");
                 }
             }
             else
             {
-                Log.Info("Urbane mreže", locationProvider + " ni na voljo. Ali ima naprava omogočene storitve določanja lokacije?");
+                txtMessage.Text = "LOCATION NULL!";
             }
+
+            /*try
+            {
+                locationProvider = locMgr.GetBestProvider(locationCriteria, true);
+                if (locationProvider != null)
+                {
+                    locMgr.RequestLocationUpdates(locationProvider, 0, 0, this);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("No (enabled) location provider available.");
+                }
+                Location currentLocation = locMgr.GetLastKnownLocation(locationProvider);
+                if (currentLocation != null)
+                {
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }*/
+
         }
 
         protected override void OnResume()
@@ -199,10 +249,22 @@ namespace UrbanSpots
         {
             HandleLocationManager();
 
-            Intent intent = new Intent(MediaStore.ActionImageCapture);
-            App._file = new File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
-            intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(App._file));
-            StartActivityForResult(intent, 0);
+            File tempFile = File.CreateTempFile("myPhoto_", ".jpg", GetExternalFilesDir("images"));
+            if (tempFile != null)
+            {
+                Intent pictureIntent = new Intent(MediaStore.ActionImageCapture);
+                if (pictureIntent.ResolveActivity(PackageManager) != null)
+                {
+                    Android.Net.Uri photoURI = FileProvider.GetUriForFile(this, Application.Context.PackageName + ".fileprovider", tempFile);
+                    pictureIntent.PutExtra(MediaStore.ExtraOutput, photoURI);
+                    StartActivityForResult(pictureIntent, 100);
+                }
+            }
+            App._file = tempFile;
+            //Intent intent = new Intent(MediaStore.ActionImageCapture);
+            //App._file = new File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
+            //intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(App._file));
+            //StartActivityForResult(intent, 0);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)

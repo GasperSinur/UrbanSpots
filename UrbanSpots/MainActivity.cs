@@ -19,6 +19,21 @@ namespace UrbanSpots
         private TextView txtWelcome;
         private Guid userGuid;
 
+        public override void OnBackPressed()
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                .SetTitle("Odjava")
+                .SetMessage("Ste prepričani, da se želite odjaviti?")
+                .SetNegativeButton("Ne", (sender, e) => { })
+                .SetPositiveButton("Da", (sender, e) =>
+                {
+                    base.OnBackPressed();
+                })
+                .Show();
+        }
+
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
